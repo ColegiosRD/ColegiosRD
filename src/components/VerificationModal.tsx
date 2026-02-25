@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X, ChevronRight, Mail, Upload, CheckCircle } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 
-interface School {
+interface SimpleSchool {
   id: string;
   name: string;
 }
@@ -11,10 +12,20 @@ interface School {
 interface VerificationModalProps {
   isOpen: boolean;
   onClose: () => void;
-  schools: School[];
 }
 
-export default function VerificationModal({ isOpen, onClose, schools }: VerificationModalProps) {
+export default function VerificationModal({ isOpen, onClose }: VerificationModalProps) {
+  const [schools, setSchools] = useState<SimpleSchool[]>([]);
+
+  useEffect(() => {
+    if (isOpen) {
+      const fetchSchools = async () => {
+        const { data } = await supabase.from('schools').select('id, name').order('name');
+        if (data) setSchools(data);
+      };
+      fetchSchools();
+    }
+  }, [isOpen]);
   const [step, setStep] = useState(1);
   const [selectedSchool, setSelectedSchool] = useState('');
   const [directorName, setDirectorName] = useState('');

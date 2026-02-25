@@ -3,25 +3,11 @@
 import Link from 'next/link';
 import { Users, DollarSign, FileText, CheckCircle, Star } from 'lucide-react';
 import RatingCircle from './RatingCircle';
-
-interface School {
-  id: string;
-  slug: string;
-  name: string;
-  province: string;
-  type: 'Privado' | 'Público';
-  rating: number;
-  verificado: boolean;
-  premium: boolean;
-  elite: boolean;
-  pruebaPromedio: number;
-  estudiantesPorClase: number;
-  cuota?: number;
-}
+import { School } from '@/lib/types';
 
 interface SchoolCardProps {
   school: School;
-  rank: number;
+  rank?: number;
 }
 
 export default function SchoolCard({ school, rank }: SchoolCardProps) {
@@ -29,7 +15,7 @@ export default function SchoolCard({ school, rank }: SchoolCardProps) {
   let verificationBg = 'bg-gray-50';
   let verificationBadge = null;
 
-  if (school.elite) {
+  if (school.subscription_tier === 'elite') {
     verificationColor = 'border-[#f59e0b]';
     verificationBg = 'bg-amber-50';
     verificationBadge = (
@@ -38,7 +24,7 @@ export default function SchoolCard({ school, rank }: SchoolCardProps) {
         <span>Elite</span>
       </div>
     );
-  } else if (school.premium) {
+  } else if (school.subscription_tier === 'premium') {
     verificationColor = 'border-[#3b82f6]';
     verificationBg = 'bg-blue-50';
     verificationBadge = (
@@ -47,7 +33,7 @@ export default function SchoolCard({ school, rank }: SchoolCardProps) {
         <span>Premium</span>
       </div>
     );
-  } else if (school.verificado) {
+  } else if (school.verification_status === 'verified') {
     verificationColor = 'border-[#10b981]';
     verificationBg = 'bg-green-50';
     verificationBadge = (
@@ -59,6 +45,10 @@ export default function SchoolCard({ school, rank }: SchoolCardProps) {
   }
 
   const typeColor = school.type === 'Privado' ? 'bg-[#dbeafe] text-[#1e40af]' : 'bg-green-100 text-green-800';
+  const provinceName = school.province?.name || '';
+  const rating = school.rating ?? 0;
+  const prueba = school.prueba_nacional ?? 0;
+  const studentsPerClass = school.students_per_class ?? 0;
 
   return (
     <Link href={`/school/${school.slug}`}>
@@ -66,17 +56,19 @@ export default function SchoolCard({ school, rank }: SchoolCardProps) {
         {verificationBadge}
 
         {/* Rank */}
-        <div className="absolute top-3 left-3 bg-[#1a365d] text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">
-          {rank}
-        </div>
+        {rank && (
+          <div className="absolute top-3 left-3 bg-[#1a365d] text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">
+            {rank}
+          </div>
+        )}
 
-        <div className="mt-6 space-y-4">
+        <div className={rank ? 'mt-6 space-y-4' : 'space-y-4'}>
           {/* Name and Province */}
           <div>
             <h3 className="font-bold text-lg text-[#1a365d] line-clamp-2 hover:text-[#2563eb] transition-colors">
               {school.name}
             </h3>
-            <p className="text-sm text-gray-600 mt-1">{school.province}</p>
+            <p className="text-sm text-gray-600 mt-1">{provinceName}</p>
           </div>
 
           {/* Type Badge */}
@@ -90,14 +82,14 @@ export default function SchoolCard({ school, rank }: SchoolCardProps) {
           <div className="grid grid-cols-2 gap-4 pt-2">
             {/* Rating Circle */}
             <div className="flex flex-col items-center justify-center space-y-1">
-              <RatingCircle rating={school.rating} size={48} />
+              <RatingCircle rating={rating} size={48} />
               <p className="text-xs text-gray-600 text-center">Calificación</p>
             </div>
 
             {/* Prueba Nacional */}
             <div className="flex flex-col items-center justify-center space-y-1">
               <div className="bg-[#f3f4f6] rounded-lg px-3 py-2 w-full text-center">
-                <p className="font-bold text-sm text-[#1a365d]">{school.pruebaPromedio}%</p>
+                <p className="font-bold text-sm text-[#1a365d]">{prueba}%</p>
               </div>
               <p className="text-xs text-gray-600 text-center">Prueba Nacional</p>
             </div>
@@ -106,16 +98,18 @@ export default function SchoolCard({ school, rank }: SchoolCardProps) {
           {/* Additional Stats */}
           <div className="space-y-2 pt-2 border-t border-gray-200">
             {/* Estudiantes por clase */}
-            <div className="flex items-center space-x-2 text-sm text-gray-700">
-              <Users className="w-4 h-4 text-[#2563eb]" />
-              <span>{school.estudiantesPorClase} estudiantes/clase</span>
-            </div>
+            {studentsPerClass > 0 && (
+              <div className="flex items-center space-x-2 text-sm text-gray-700">
+                <Users className="w-4 h-4 text-[#2563eb]" />
+                <span>{studentsPerClass} estudiantes/clase</span>
+              </div>
+            )}
 
             {/* Cuota */}
-            {school.cuota && (
+            {school.tuition_min && (
               <div className="flex items-center space-x-2 text-sm text-gray-700">
                 <DollarSign className="w-4 h-4 text-[#10b981]" />
-                <span>RD${school.cuota.toLocaleString()}</span>
+                <span>RD${school.tuition_min.toLocaleString()}{school.tuition_max ? ` - ${school.tuition_max.toLocaleString()}` : ''}</span>
               </div>
             )}
           </div>
