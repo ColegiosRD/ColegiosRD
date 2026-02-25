@@ -213,7 +213,7 @@ export default function RankingPage() {
 
       {/* Ad Banner */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <AdBanner type="leaderboard" />
+        <AdBanner size="leaderboard" label="Espacio publicitario — Ranking" />
       </div>
 
       {/* Schools Grid */}
@@ -233,7 +233,7 @@ export default function RankingPage() {
                   {/* In-feed ads every 6 cards */}
                   {(idx + 1) % 6 === 0 && idx !== schools.length - 1 && (
                     <div className="mt-6">
-                      <AdBanner type="rectangle" />
+                      <AdBanner size="rectangle" label="Espacio publicitario" />
                     </div>
                   )}
                 </div>

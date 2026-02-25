@@ -378,8 +378,8 @@ export default function SchoolPage() {
             )}
 
             {/* Ad Banners */}
-            <AdBanner type="rectangle" />
-            <AdBanner type="rectangle" />
+            <AdBanner size="rectangle" label="Espacio publicitario" />
+            <AdBanner size="rectangle" label="Espacio publicitario" />
           </div>
         </div>
       </div>

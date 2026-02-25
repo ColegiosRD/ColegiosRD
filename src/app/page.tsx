@@ -136,7 +136,7 @@ export default function Home() {
 
       {/* Ad Banner - Leaderboard */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <AdBanner type="leaderboard" />
+        <AdBanner size="leaderboard" label="Espacio publicitario" />
       </div>
 
       {/* Top Schools Section */}
@@ -229,7 +229,7 @@ export default function Home() {
 
       {/* Ad Banner - Mid Page */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <AdBanner type="leaderboard" />
+        <AdBanner size="leaderboard" label="Espacio publicitario" />
       </div>
 
       {/* Open House Section */}
