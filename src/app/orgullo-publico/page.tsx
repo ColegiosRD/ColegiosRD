@@ -140,7 +140,7 @@ export default function OrgulloPublicoPage() {
 
                       {/* Rating */}
                       <div className="flex-shrink-0">
-                        <RatingCircle rating={school.rating} size="md" />
+                        <RatingCircle rating={school.rating ?? 0} size={48} />
                       </div>
                     </div>
                   </Link>

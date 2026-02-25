@@ -169,7 +169,7 @@ export default function OpenHousePage() {
 
                         {/* Rating */}
                         <div className="flex-shrink-0">
-                          <RatingCircle rating={event.school?.rating} size="md" />
+                          <RatingCircle rating={event.school?.rating ?? 0} size={48} />
                         </div>
                       </div>
 

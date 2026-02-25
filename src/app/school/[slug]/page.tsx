@@ -164,7 +164,7 @@ export default function SchoolPage() {
             </div>
 
             <div className="flex flex-col items-center gap-4">
-              <RatingCircle rating={school.rating} size="lg" />
+              <RatingCircle rating={school.rating ?? 0} size={72} />
               <button className="flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors">
                 <Share2 className="w-4 h-4" />
                 Compartir
