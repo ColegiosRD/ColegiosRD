@@ -2,14 +2,12 @@ name: MINERD Data Monitor
 
 on:
   schedule:
-    # Runs every Monday at 12:00 PM (Dominican Republic time, UTC-4)
     - cron: '0 16 * * 1'
-  workflow_dispatch: # Allows manual trigger from GitHub
+  workflow_dispatch:
 
 jobs:
   check-minerd:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -19,34 +17,9 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Restore previous snapshot
-        continue-on-error: true
-        run: |
-          git fetch origin data-snapshots || true
-          git checkout origin/data-snapshots -- scripts/.minerd-snapshot.json || echo "{}" > scripts/.minerd-snapshot.json
-
       - name: Run MINERD monitor
-        id: monitor
-        run: |
-          node scripts/check-minerd-updates.js 2>&1 | tee monitor-output.txt
-          if grep -q "ALERTA" monitor-output.txt; then
-            echo "changes_found=true" >> $GITHUB_OUTPUT
-          else
-            echo "changes_found=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Save snapshot
-        run: |
-          git config user.name "ColegiosRD Bot"
-          git config user.email "info@colegiosrd.com"
-          git checkout -B data-snapshots || git checkout data-snapshots
-          cp scripts/.minerd-snapshot.json . || true
-          git add -A
-          git commit -m "Update MINERD snapshot $(date +%Y-%m-%d)" || true
-          git push origin data-snapshots --force || true
+        run: node scripts/check-minerd-updates.js
 
       - name: Alert if changes found
-        if: steps.monitor.outputs.changes_found == 'true'
-        run: |
-          echo "::error::MINERD DATA UPDATE DETECTED - New data available on MINERD portal. Check the monitor output above for details."
-          exit 1
+        if: failure()
+        run: echo "MINERD data update detected"
