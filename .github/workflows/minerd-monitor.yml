@@ -1,0 +1,25 @@
+name: MINERD Data Monitor
+
+on:
+  schedule:
+    - cron: '0 16 * * 1'
+  workflow_dispatch:
+
+jobs:
+  check-minerd:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run MINERD monitor
+        run: node scripts/check-minerd-updates.js
+
+      - name: Alert if changes found
+        if: failure()
+        run: echo "MINERD data update detected"
