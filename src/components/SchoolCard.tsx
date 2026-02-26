@@ -47,7 +47,7 @@ export default function SchoolCard({ school, rank }: SchoolCardProps) {
   const typeColor = school.type === 'Privado' ? 'bg-[#dbeafe] text-[#1e40af]' : 'bg-green-100 text-green-800';
   const provinceName = school.province?.name || '';
   const rating = school.rating ?? 0;
-  const prueba = school.prueba_nacional ?? 0;
+  const prueba = school.prueba_nacional;
   const studentsPerClass = school.students_per_class ?? 0;
 
   return (
@@ -89,7 +89,7 @@ export default function SchoolCard({ school, rank }: SchoolCardProps) {
             {/* Prueba Nacional */}
             <div className="flex flex-col items-center justify-center space-y-1">
               <div className="bg-[#f3f4f6] rounded-lg px-3 py-2 w-full text-center">
-                <p className="font-bold text-sm text-[#1a365d]">{prueba}%</p>
+                <p className="font-bold text-sm text-[#1a365d]">{prueba ? `${prueba}%` : 'N/A'}</p>
               </div>
               <p className="text-xs text-gray-600 text-center">Prueba Nacional</p>
             </div>

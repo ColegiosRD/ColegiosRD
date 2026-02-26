@@ -106,27 +106,27 @@ export default function SchoolPage() {
   };
 
   const statCards = [
-    {
+    school.prueba_nacional ? {
       icon: <BookOpen className="w-6 h-6" />,
       label: 'Prueba Nacional Promedio',
-      value: school.prueba_nacional ? `${school.prueba_nacional.toFixed(1)}` : 'N/A',
-    },
-    {
+      value: `${school.prueba_nacional.toFixed(1)}`,
+    } : null,
+    school.students_per_class ? {
       icon: <Users className="w-6 h-6" />,
       label: 'Estudiantes por Clase',
-      value: school.students_per_class ? `${school.students_per_class}` : 'N/A',
-    },
-    {
+      value: `${school.students_per_class}`,
+    } : null,
+    school.enrollment ? {
       icon: <Users className="w-6 h-6" />,
       label: 'Matrícula Total',
-      value: school.enrollment ? `${school.enrollment.toLocaleString()}` : 'N/A',
-    },
-    {
+      value: `${school.enrollment.toLocaleString()}`,
+    } : null,
+    school.tuition_min || school.tuition_max ? {
       icon: <DollarSign className="w-6 h-6" />,
       label: 'Costo de Matrícula',
       value: formatTuition(school.tuition_min, school.tuition_max),
-    },
-  ];
+    } : null,
+  ].filter(Boolean);
 
   return (
     <>
