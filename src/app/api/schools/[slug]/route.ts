@@ -23,26 +23,8 @@ export async function GET(request: NextRequest, { params }: Params) {
       .from('schools')
       .select(
         `
-        id,
-        name,
-        slug,
-        type,
-        description,
-        address,
-        phone,
-        email,
-        website,
-        rating,
-        views,
-        is_top_public,
-        prueba_nacional,
-        students_count,
-        province_id,
-        zone,
-        founded_year,
-        headmaster_name,
-        verification_status,
-        provinces (id, name, region)
+        *,
+        provinces (id, name, zone)
         `
       )
       .eq('slug', slug)

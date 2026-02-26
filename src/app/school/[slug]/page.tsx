@@ -105,28 +105,19 @@ export default function SchoolPage() {
     }
   };
 
-  const statCards = [
-    school.prueba_nacional ? {
-      icon: <BookOpen className="w-6 h-6" />,
-      label: 'Prueba Nacional Promedio',
-      value: `${school.prueba_nacional.toFixed(1)}`,
-    } : null,
-    school.students_per_class ? {
-      icon: <Users className="w-6 h-6" />,
-      label: 'Estudiantes por Clase',
-      value: `${school.students_per_class}`,
-    } : null,
-    school.enrollment ? {
-      icon: <Users className="w-6 h-6" />,
-      label: 'Matrícula Total',
-      value: `${school.enrollment.toLocaleString()}`,
-    } : null,
-    school.tuition_min || school.tuition_max ? {
-      icon: <DollarSign className="w-6 h-6" />,
-      label: 'Costo de Matrícula',
-      value: formatTuition(school.tuition_min, school.tuition_max),
-    } : null,
-  ].filter(Boolean);
+  const statCards: { icon: React.ReactNode; label: string; value: string }[] = [];
+  if (school.prueba_nacional) {
+    statCards.push({ icon: <BookOpen className="w-6 h-6" />, label: 'Prueba Nacional Promedio', value: `${school.prueba_nacional.toFixed(1)}` });
+  }
+  if (school.students_per_class) {
+    statCards.push({ icon: <Users className="w-6 h-6" />, label: 'Estudiantes por Clase', value: `${school.students_per_class}` });
+  }
+  if (school.enrollment) {
+    statCards.push({ icon: <Users className="w-6 h-6" />, label: 'Matrícula Total', value: `${school.enrollment.toLocaleString()}` });
+  }
+  if (school.tuition_min || school.tuition_max) {
+    statCards.push({ icon: <DollarSign className="w-6 h-6" />, label: 'Costo de Matrícula', value: formatTuition(school.tuition_min, school.tuition_max) });
+  }
 
   return (
     <>

@@ -25,17 +25,19 @@ export async function GET(request: NextRequest) {
         name,
         slug,
         type,
+        level,
         address,
         phone,
         email,
         website,
         rating,
-        views,
         is_top_public,
         prueba_nacional,
+        enrollment,
         province_id,
-        zone,
-        provinces (id, name, region)
+        verification_status,
+        subscription_tier,
+        provinces (id, name, zone)
         `,
         { count: 'exact' }
       );
@@ -52,7 +54,7 @@ export async function GET(request: NextRequest) {
     }
 
     if (zone) {
-      query = query.eq('zone', zone);
+      query = query.eq('provinces.zone', zone);
     }
 
     if (province) {
